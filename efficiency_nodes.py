@@ -4413,3 +4413,8 @@ try:
 
 except ImportError:
     print(f"{warning('Efficiency Nodes Warning:')} Failed to import python package 'simpleeval'; related nodes disabled.\n")
+
+
+########################################################################################################################
+from .custom_nodes import register_nodes
+register_nodes(NODE_CLASS_MAPPINGS)
