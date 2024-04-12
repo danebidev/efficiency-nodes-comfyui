@@ -1,8 +1,6 @@
 from tsc_utils import *
 from .efficiency_nodes import encode_prompts, TSC_Apply_ControlNet_Stack
 
-from PIL import Image
-
 import comfy.diffusers_load
 import comfy.samplers
 import comfy.sample
@@ -19,148 +17,9 @@ import folder_paths
 import numpy as np
 
 
-########################################################################################################################
-# Custom Number Operation
-class NumberOperation:
-    def __init__(self):
-        pass
-
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "operation": (
-                    ["addition", "subtraction", "multiplication", "division"],
-                ),
-                "number1": (
-                    "NUMBER",
-                    {
-                        "default": 0,
-                    },
-                ),
-                "number2": (
-                    "NUMBER",
-                    {
-                        "default": 0,
-                    },
-                ),
-            },
-        }
-
-    RETURN_TYPES = ("NUMBER", "FLOAT", "INT")
-
-    FUNCTION = "execute"
-
-    CATEGORY = "custom"
-
-    def execute(self, operation, number1, number2):
-        if operation == "addition":
-            ans = number1 + number2
-        elif operation == "subtraction":
-            ans = number1 - number2
-        elif operation == "multiplication":
-            ans = number1 * number2
-        elif operation == "division":
-            ans = number1 / number2
-
-        return (ans, ans, int(ans))
+####################################################################################################
 
 
-########################################################################################################################
-# Custom Float Operation
-class FloatOperation:
-    def __init__(self):
-        pass
-
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "operation": (
-                    ["addition", "subtraction", "multiplication", "division"],
-                ),
-                "number1": (
-                    "FLOAT",
-                    {
-                        "default": 0,
-                    },
-                ),
-                "number2": (
-                    "FLOAT",
-                    {
-                        "default": 0,
-                    },
-                ),
-            },
-        }
-
-    RETURN_TYPES = ("NUMBER", "FLOAT", "INT")
-
-    FUNCTION = "execute"
-
-    CATEGORY = "custom"
-
-    def execute(self, operation, number1, number2):
-        if operation == "addition":
-            ans = number1 + number2
-        elif operation == "subtraction":
-            ans = number1 - number2
-        elif operation == "multiplication":
-            ans = number1 * number2
-        elif operation == "division":
-            ans = number1 / number2
-
-        return (ans, ans, int(ans))
-
-
-########################################################################################################################
-# Custom Int Operation
-class IntOperation:
-    def __init__(self):
-        pass
-
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "operation": (
-                    ["addition", "subtraction", "multiplication", "division"],
-                ),
-                "number1": (
-                    "INT",
-                    {
-                        "default": 0,
-                    },
-                ),
-                "number2": (
-                    "INT",
-                    {
-                        "default": 0,
-                    },
-                ),
-            },
-        }
-
-    RETURN_TYPES = ("NUMBER", "FLOAT", "INT")
-
-    FUNCTION = "execute"
-
-    CATEGORY = "custom"
-
-    def execute(self, operation, number1, number2):
-        if operation == "addition":
-            ans = number1 + number2
-        elif operation == "subtraction":
-            ans = number1 - number2
-        elif operation == "multiplication":
-            ans = number1 * number2
-        elif operation == "division":
-            ans = number1 / number2
-
-        return (ans, ans, int(ans))
-
-
-########################################################################################################################
 # Custom Loader
 class CustomLoader:
     def __init__(self):
@@ -429,7 +288,4 @@ class CustomLoader:
 
 
 def register_nodes(c):
-    c.update({"Custom Number Operation": NumberOperation})
-    c.update({"Custom Float Operation": FloatOperation})
-    c.update({"Custom Int Operation": IntOperation})
     c.update({"Custom Loader": CustomLoader})
