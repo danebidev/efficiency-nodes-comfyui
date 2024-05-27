@@ -120,13 +120,18 @@ def sample_common(model, add_noise, noise_seed, tile_width, tile_height, tiling_
     tile_height = min(shape[2] * 8, tile_height)
 
     real_model = None
-    positive_copy = comfy.sample.convert_cond(positive)
-    negative_copy = comfy.sample.convert_cond(negative)
+    # positive_copy = comfy.sample.convert_cond(positive)
+    # negative_copy = comfy.sample.convert_cond(negative)
+    #change made due to changes in omfy.sampler's 'convert cond' has been removed.. check if any error persists.
+    positive_copy = comfy.sampler_helpers.convert_cond(positive)
+    negative_copy = comfy.sampler_helpers.convert_cond(negative) 
     modelPatches, inference_memory = comfy.sample.get_additional_models(positive_copy, negative_copy, model.model_dtype())
     comfy.model_management.load_models_gpu([model] + modelPatches, model.memory_required(noise.shape) + inference_memory)
     real_model = model.model
-
-    sampler = comfy.samplers.KSampler(real_model, steps=steps, device=device, sampler=sampler_name, scheduler=scheduler, denoise=denoise, model_options=model.model_options)
+#smaller changes
+    model_patcher = comfy.model_patcher.ModelPatcher(model.model, load_device=device, offload_device=comfy.model_management.unet_offload_device())
+    sampler = comfy.samplers.KSampler(model_patcher, steps=steps, device=device, sampler=sampler_name, scheduler=scheduler, denoise=denoise, model_options=model.model_options)
+    #sampler = comfy.samplers.KSampler(real_model, steps=steps, device=device, sampler=sampler_name, scheduler=scheduler, denoise=denoise, model_options=model.model_options)
 
     if tiling_strategy != 'padded':
         if noise_mask is not None:
